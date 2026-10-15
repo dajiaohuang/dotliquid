@@ -14,7 +14,7 @@ namespace DotLiquid
     {
         #region Static fields
 
-        private static System.Collections.Concurrent.ConcurrentDictionary<string, Action<object, Hash>> mapperCache = new System.Collections.Concurrent.ConcurrentDictionary<string, Action<object, Hash>>();
+        private static System.Collections.Concurrent.ConcurrentDictionary<Tuple<Type, bool>, Action<object, Hash>> mapperCache = new System.Collections.Concurrent.ConcurrentDictionary<Tuple<Type, bool>, Action<object, Hash>>();
 
         #endregion
 
@@ -50,7 +50,7 @@ namespace DotLiquid
 
         private static Action<object, Hash> GetObjToDictionaryMapper(Type type, bool includeBaseClassProperties)
         {
-            var cacheKey = type.FullName + "_" + (includeBaseClassProperties ? "WithBaseProperties" : "WithoutBaseProperties");
+            var cacheKey = Tuple.Create(type, includeBaseClassProperties);
 
             return mapperCache.GetOrAdd(cacheKey, (key) => GenerateMapper(type, includeBaseClassProperties));
         }
