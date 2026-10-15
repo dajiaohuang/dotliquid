@@ -52,7 +52,7 @@ namespace DotLiquid.Tags
                 partial = Template.Parse(source);
             }
 
-            string shortenedTemplateName = _templateName.Substring(1, _templateName.Length - 2);
+            string shortenedTemplateName = (string) context[_templateName];
             object variable = context[_variableName ?? shortenedTemplateName, _variableName != null];
 
             context.Stack(() =>
